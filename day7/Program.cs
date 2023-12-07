@@ -12,6 +12,7 @@ namespace day1
         {
             (long[] hand, long bet)[] sortedArray = new (long[], long )[array.Length];
             int j = 0;
+            /*
             //group and sort ascending by every digit -> janky ass Tree -> preorder traversal -> if Leaf not empty -> add to sorted array
             var rank1 = array.Select(x => (x.hand.Select(x =>CharToLong(x, joker)).ToArray(), x.bet)).GroupBy(n => n.Item1[0]).OrderBy(x => x.Key);
             foreach (var x1 in rank1)
@@ -20,9 +21,15 @@ namespace day1
                         foreach (var x4 in x3.GroupBy(n => n.Item1[3]).OrderBy(x => x.Key))
                             foreach (var x5 in x4.GroupBy(n => n.Item1[4]).OrderBy(x => x.Key))
                                 if (x5.First().Item1.GetType().IsArray)
-                                    sortedArray[j++] = (x5.First().Item1, x5.First().bet);
-            //doesnt work for some reason
-            //sortedArray.OrderBy(c => c.hand[0]).ThenBy(c => c.hand[1]).ThenBy(c => c.hand[2]).ThenBy(c => c.hand[3]).ThenBy(c => c.hand[4]).ToArray();
+                                    sortedArray[j++] = (x5.First().Item1, x5.First().bet);*/
+            //better solution 
+            sortedArray = array.Select(x=> (x.hand.Select(y=>CharToLong(y, joker)).ToArray(), x.bet))
+                                            .OrderBy(c => c.Item1[0])
+                                            .ThenBy(c1 => c1.Item1[1])
+                                            .ThenBy(c2 => c2.Item1[2])
+                                            .ThenBy(c3 => c3.Item1[3])
+                                            .ThenBy(c4 => c4.Item1[4])
+                                            .ToArray();
             return sortedArray;
         }
 
@@ -98,30 +105,19 @@ namespace day1
             (string hand, long bet)[] lines = input
                                                 .Split("\n", StringSplitOptions.RemoveEmptyEntries)
                                                 .Select(line => (line.Split(" ").First(), long.Parse(line.Split(" ").Last())) ).ToArray();
-            //part1
-            long rank = 1;
-            var toh = GetTypesofHands(lines);
-            long result = toh.Keys
-                        .OrderDescending() // 6 Bad Hand --> 0 Best Hand
-                        .Select(k => SortArray(toh[k]) // decide who got better hand
-                                        .Select(x => x.Item2 * rank++)
-                                        .Sum()
-                        )
-                        .Sum();
-            Console.WriteLine(result);
-
-            //part2
-            bool joker = true;
-            rank = 1;
-            toh = GetTypesofHands(lines, joker);
-            long result2 = toh.Keys
-                        .OrderDescending() // 6 Bad Hand --> 0 Best Hand
-                        .Select(k => SortArray(toh[k], joker) // decide who got better hand
-                                       // .Reverse()
-                                        .Select(x => x.Item2 * rank++).Sum()
-                        )
-                        .Sum();
-            Console.WriteLine(result2);
+            //[part1, part2] 
+            foreach (var joker in new bool[]{false, true})
+            {
+                long rank = 1;
+                var toh = GetTypesofHands(lines, joker);
+                long result = toh.Keys
+                            .OrderDescending() // 6 Bad Hand --> 0 Best Hand
+                            .Select(k => SortArray(toh[k], joker) // decide who got better hand
+                                            .Select(x => x.Item2 * rank++).Sum()
+                            )
+                            .Sum();
+                Console.WriteLine(result);  
+            }
         }
     }
 }
