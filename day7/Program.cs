@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
-namespace day1
+namespace day7
 {
     
     
