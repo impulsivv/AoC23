@@ -9,7 +9,6 @@ namespace day8
     {
         static List<long> NumsDiff(List<long> nums)
         {
-
             List<long> result = new();
             for (int i = 0; i < nums.Count-1; i++)
                 result.Add(nums[i + 1] - nums[i]);
@@ -24,26 +23,37 @@ namespace day8
                 current = listOFNums.Last();
                 listOFNums.Add(NumsDiff(current));         
             }
-            //listOFNums.Reverse();
             return listOFNums;
         }
         static void Main(string[] args)
         {
             string input = System.IO.File.ReadAllText(@"./input.txt").Replace("\r", string.Empty);
             string[] lines = input.Split("\n", StringSplitOptions.RemoveEmptyEntries);
-        
-            var result = lines.Select(item => item.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToList())
-                         .Select(nums => GetNextNum(nums).Select(x=>x.Last()).Sum())
-                         .Sum();
 
             //part1
+            var result = lines.Select(item => item.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToList())
+                         .Select(nums => GetNextNum(nums)
+                                            .Select(x=>x.Last())
+                                            .Sum()
+                         ).Sum();
             Console.WriteLine(result);
 
             //part2
             var result2 = lines.Select(item => item.Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(x => long.Parse(x)).ToList())
-                          .Select(nums => GetNextNum(nums).Select(x => x.First()).Reverse().Aggregate(0, (long acc, long next) => next - acc)
+                          .Select(nums => GetNextNum(nums)
+                                            .Select(x => x.First())
+                                            .Reverse()
+                                            .Aggregate(0, (long acc, long next) => next - acc)
                           ).Sum();
             Console.WriteLine(result2);
+
+            IEnumerable<int> range = Enumerable.Range(1, 20);
+            IEnumerable<int> banned = Enumerable.Range(15, 4);
+
+            foreach (var item in range.Except(banned))
+            {
+                Console.WriteLine(item);
+            };
         }
     }
 }

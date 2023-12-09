@@ -33,23 +33,14 @@ namespace day1
             List<int> results = new();
 
             foreach (Match m in m1)
-            {
-                for (int col = 0; col < m.Length; col++)
-                    if (coords.Contains( (coord.row - 1, m.Index + col) ))
-                        results.Append(int.Parse(m.Value));
-            }
+                if(Enumerable.Range(m.Index , m.Length).Intersect(Enumerable.Range(coord.col -1, 3)).Count() != 0)
+                    results.Add(int.Parse(m.Value));
             foreach (Match m in m2)
-            {
-                for (int col = 0; col < m.Length; col++)
-                    if (coords.Contains( (coord.row, m.Index + col) ))
-                        results.Append(int.Parse(m.Value));
-            }
+                if(Enumerable.Range(m.Index , m.Length).Intersect(Enumerable.Range(coord.col -1, 3)).Count() != 0)
+                    results.Add(int.Parse(m.Value));
             foreach (Match m in m3)
-            {
-                for (int col = 0; col < m.Length; col++)
-                    if (coords.Contains( (coord.row + 1, m.Index + col) ))
-                        results.Append(int.Parse(m.Value));
-            }
+                if(Enumerable.Range(m.Index , m.Length).Intersect(Enumerable.Range(coord.col -1, 3)).Count() != 0)
+                    results.Add(int.Parse(m.Value));
 
             if (results.Count == 2)
                 return results.Aggregate(1, (int accu, int next) => accu * next);
@@ -88,7 +79,7 @@ namespace day1
             HashSet<(int row, int index, int len)> coordsNums = new();
 
             Regex regexStar = new Regex(@"\*");
-            for (int row = 0; row < lines.Length; row++)
+            for (int row = 1; row < lines.Length - 1; row++)
             {   
                 //var nums = regexNumbers.Matches(lines[row]);
                 //foreach (Match m in nums) coordsNums.Add( (row, m.Index, m.Length) );
