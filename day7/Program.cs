@@ -11,9 +11,9 @@ namespace day7
         static (long[], long)[] SortArray( (string hand, long bet)[] array, bool joker=false)
         {
             (long[] hand, long bet)[] sortedArray = new (long[], long )[array.Length];
-            int j = 0;
             /*
             //group and sort ascending by every digit -> janky ass Tree -> preorder traversal -> if Leaf not empty -> add to sorted array
+            int j = 0;
             var rank1 = array.Select(x => (x.hand.Select(x =>CharToLong(x, joker)).ToArray(), x.bet)).GroupBy(n => n.Item1[0]).OrderBy(x => x.Key);
             foreach (var x1 in rank1)
                 foreach (var x2 in x1.GroupBy(n => n.Item1[1]).OrderBy(x => x.Key))
@@ -21,7 +21,8 @@ namespace day7
                         foreach (var x4 in x3.GroupBy(n => n.Item1[3]).OrderBy(x => x.Key))
                             foreach (var x5 in x4.GroupBy(n => n.Item1[4]).OrderBy(x => x.Key))
                                 if (x5.First().Item1.GetType().IsArray)
-                                    sortedArray[j++] = (x5.First().Item1, x5.First().bet);*/
+                                    sortedArray[j++] = (x5.First().Item1, x5.First().bet);
+            */
             //better solution 
             sortedArray = array.Select(x=> (x.hand.Select(y=>CharToLong(y, joker)).ToArray(), x.bet))
                                             .OrderBy(c => c.Item1[0])
